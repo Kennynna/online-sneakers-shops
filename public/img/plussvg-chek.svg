@@ -15,7 +15,7 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_60_200" result="shape"/>
 </filter>
 <linearGradient id="paint0_linear_60_200" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse">
-<stop stop-color="#CBF4D3" stop-opacity="0.76"/>
+<stop stop-color="#090E0A" stop-opacity="0.76"/>
 <stop offset="1" stop-color="#3CC755"/>
 </linearGradient>
 <clipPath id="clip0_60_200">

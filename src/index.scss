@@ -1,6 +1,4 @@
-
-
-*{
+* {
   box-sizing: border-box;
   margin: 0px;
   font-family: system-ui;
@@ -8,111 +6,73 @@
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
-}body {
-
+  box-sizing: border-box;
+}
+body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #E7F6FF;
+  background: #e7f6ff;
   max-width: 1250px;
   margin: 0 auto;
-
 }
 
-
-.App{
-
+//SVG Корзина и Юзер
+.basketSvg {
+  path {
+    transition: 0.3s;
+  }
+  &:hover {
+    path {
+      stroke: black;
+    }
+  }
 }
-.wrapper{
-  background: #FFFFFF;
+.userSvg {
+}
+
+.wrapper {
+  background: #ffffff;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
   border-radius: 20px;
 }
 
-header{
+header {
   border-bottom: 1px solid rgba(73, 73, 73, 0.769);
 }
 
-.content{
+.content {
   gap: 40px;
 }
 
-
-.mainCards{
+.mainCards {
   flex-wrap: wrap;
   gap: 40px;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 //Карточка кроссовок
-.card{
-  padding: 20px 20px;
-  width: 210px;
-  border-radius: 40px;
-  border: 1px solid #F3F3F3;
-  background: #FFF;
-  display: flex;
+.content-price {
   flex-direction: column;
-  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
-  &:hover{
-    box-shadow: 0px 14px 30px 0px rgba(0, 0, 0, 0.05);
-    transform: translateY(-5px);
-  }
-  img{
-    margin: 0 auto;
-  }
-  p{
-    font-size: 14px;
-  font-style: normal;
-  width: 150px;
-  }
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    padding: 0;
-    border-radius: 30%;
-    cursor: pointer;
-    
-    svg {
-      path {
-        transition: .3s;
-      }
-    }
-
-    &:hover svg path {
-      fill: rgb(0, 0, 0);
-    }
-  }
-  .content-price{
-    flex-direction: column;
-  }
-  span{
-    text-transform: uppercase;
-  color: #BDBDBD;
-  font-size: 11px;
-  }
 }
 
 //Поиск
-.search-block{
-  border: 1px solid #F3F3F3;
+.search-block {
+  border: 1px solid #f3f3f3;
   border-radius: 10px;
   padding: 0 15px;
-  input{
+  input {
     border: 0;
     padding: 13px;
     font-size: 16px;
     width: 200px;
   }
 }
-.favorite{
+.favorite {
   position: absolute;
   cursor: pointer;
 }
 
 //затемнение
-.overlay{
+.overlay {
   position: absolute;
   left: 0;
   top: 0;
@@ -123,35 +83,34 @@ header{
 }
 
 //Правое окно при заказе
-.drawer{
+.drawer {
   position: absolute;
   width: 420px;
   height: 100%;
   right: 0;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.1);
   padding: 30px;
   display: flex;
   flex-direction: column;
 
-
-  h2{
+  h2 {
     margin: 0;
     font-size: 24px;
-    img{
-      cursor:pointer;
+    img {
+      cursor: pointer;
     }
   }
 }
 
 //карточка товара в окне
-.cartItem{
-  border: 1px solid #F3F3F3;
+.cartItem {
+  border: 1px solid #f3f3f3;
   border-radius: 20px;
   overflow: hidden;
   padding: 20px;
   // блок с изображенем
-  .cartItemImg{
+  .cartItemImg {
     width: 70px;
     height: 70px;
     background-size: contain;
@@ -159,34 +118,34 @@ header{
     background-repeat: no-repeat;
     margin-right: 20px;
   }
-  p{
+  p {
     font-size: 14px;
   }
-  b{
+  b {
     font-size: 12px;
   }
-  .removeBtn{
+  .removeBtn {
     opacity: 0.2;
     transition: 0.2s;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       opacity: 1;
     }
   }
 }
 
 //нижнее поисание
-.cartTotalBlock{
-  ul{
+.cartTotalBlock {
+  ul {
     display: block;
     margin-bottom: 30px !important;
-    li{
+    li {
       display: flex;
       align-items: flex-end;
       margin-bottom: 20px;
     }
-    div{
+    div {
       flex: 1;
       height: 1px;
       border-bottom: 1px dashed black;
@@ -195,47 +154,44 @@ header{
       margin: 0 7px;
     }
   }
-  
-  .greenButton{
+
+  .greenButton {
     position: relative;
-    img{
+    img {
       position: absolute;
       top: 20px;
       right: 30px;
       transition: transform 0.2s ease-in-out;
-      
     }
-    &:hover{
-      img{
+    &:hover {
+      img {
         transform: translateX(10px);
       }
     }
   }
 }
 // Блок со всеми айтемамы в окне
-.items{
+.items {
   flex: 1;
   overflow: auto;
 }
 
-
 //Кнопка зеленая
-.greenButton{
-  
-    width: 100%;
-    height: 55px;
-    border-radius: 18px;
-    background: #9DD458;
-    border: none;
-    color: #FFF;
-    font-size: 16px;
-    font-weight: 500;
-    transition: 0.3s;
-    cursor: pointer;
-    &:hover{
-      background: #56940a;
-    }
-    &:active{
-      background: #73ac2d;
-    }
+.greenButton {
+  width: 100%;
+  height: 55px;
+  border-radius: 18px;
+  background: #9dd458;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    background: #56940a;
+  }
+  &:active {
+    background: #73ac2d;
+  }
 }

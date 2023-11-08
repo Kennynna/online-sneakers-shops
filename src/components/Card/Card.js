@@ -5,27 +5,35 @@ import style from './Card.module.scss'
 
 
 
-function Card(props) {
+function Card({ imgUrl, title, price, onFavorite, onPlus }) {
     const [isAdded, setIsAdded] = React.useState(false); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
+    const [isFavorite, setIsFavorite] = React.useState(false); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
     const onClickPlus = () => {
-        setIsAdded(!isAdded);{/*Задаем услове, чтобы наш + на товаре превращался в галочку и наоборот снимает если повторно нажмем*/}
-
+        onPlus({ imgUrl, title, price });
+        setIsAdded(!isAdded); {/*Задаем услове, чтобы наш + на товаре превращался в галочку и наоборот снимает если повторно нажмем*/ }
     }
+    const onClickLike = () => {
+        onFavorite({ imgUrl, title, price });//функция которая возвращает в себя объект
+        setIsFavorite(!isFavorite);//функция которая ставит лайк красным
+    }
+
+
     return (
         <div className={style.card}>
-            <div className={style.favorite} onClick={props.onFavorite}>
-                <img src="/img/likee.svg" alt="" />
+            <div className={style.favorite} >
+                <img onClick={onClickLike} 
+                    src={isFavorite ? "/img/like-active.svg" : "/img/likee.svg"} alt="UnLike" />
             </div>
-            <img width={130} height={112} src={props.imgUrl} alt="" />
-            <p>{props.title}</p>
+            <img className='IMGMD' width={130} height={112} src={imgUrl} alt="" />
+            <p>{title}</p>
             <div className="d-flex justify-between align-center">
                 <div className="content-price d-flex justify-between  ">
                     <span>Цена:</span>
-                    <b>{props.price} руб</b>
+                    <b>{price} руб</b>
                 </div>
                 <button onClick={onClickPlus}>
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        {isAdded ? (
+                        {isAdded ? ( //Замена svg при клике 
                             <g>
                                 <rect width="32" height="32" rx="8" fill="url(#paint0_linear_60_200)" />
                                 <g clip-path="url(#clip0_60_200)">

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.scss';
 import 'macro-css';
 import App from './App';
+import { Route, Routes } from "react-router-dom"; 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

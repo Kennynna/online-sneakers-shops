@@ -59,6 +59,7 @@ header {
   border: 1px solid #f3f3f3;
   border-radius: 10px;
   padding: 0 15px;
+  position: relative;
   input {
     border: 0;
     padding: 13px;
@@ -195,3 +196,85 @@ header {
     background: #73ac2d;
   }
 }
+
+.SearchRemoveBtn:active{
+
+
+scale: 1.2;
+}
+.SearchRemoveBtn{
+  position: absolute;
+  right: 0;
+  top: 10px;
+  
+}
+
+//Пустая корзина
+.cartEmpty{
+  text-align: center;
+  p{
+    width: 280px;
+    line-height: 24px;
+  }
+
+  .greenButton{
+    width: 245px;
+    margin-top: 20px;
+    &:hover {
+      img{
+        transform: rotate(180deg) translateX(3px);
+      }
+    }
+    img{
+      position: relative;
+      top: 1px;
+      transform: rotate(180deg);
+      margin-right: 15px;
+      transition: transform 0.15s ease-in-out;
+    }
+  }
+}
+
+@media (max-width:500px){
+  .drawer{
+    position: fixed;
+    overflow-y: hidden;
+  }
+  .mainCards{
+    flex-direction:row;
+    gap: 4px;
+  }
+  .p40{
+    padding: 4px !important;
+  }
+  .head{
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px;
+    ul{
+      justify-content: space-between;
+      gap: 110px;
+    }
+  }
+  .Titlemd{
+    flex-direction: column;
+    gap: 30px;
+  }
+  .Card_card__1z0q4{
+    padding: 5px;
+    width: 150px !important;
+    .IMGMD{
+      width: 90px;
+      height: 90px;
+    }
+    p{
+      font-size: 10px !important;
+      max-width: 90px;
+      text-align: center;
+    }
+    b{
+      font-size: 10px !important;
+    }
+  }
+  }

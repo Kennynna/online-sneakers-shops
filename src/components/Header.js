@@ -1,8 +1,12 @@
+import { Link } from "react-router-dom"
+
 function Header(props) {
   return (
     <header className="head   d-flex justify-between align-center p-40">
       <div className="d-flex align-center clear">
+        <Link to={'/'}>
         <img className='mr-10' width={40} height={40} src="/img/logo.png" />
+        </Link>
         <div className="">
           <h3>React Sneakers</h3>
           <p>Магазин оригинальный кросовок</p>
@@ -18,9 +22,11 @@ function Header(props) {
           <span>1200 руб.</span>
         </li>
         <li>
+          <Link to={'/favorite'}>
           <img width={18} height={18} 
           className="mr-20"
           src="/img/heart.svg" alt="Закладки"/>
+          </Link>
         </li>
         <li>
           <svg className="userSvg" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

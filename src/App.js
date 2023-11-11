@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import Card from "./components/Card/Card.js";
 import Header from "./components/Header";
 import Overlay from "./components/Overlay";
+import { Route, Routes } from "react-router-dom";
+import Home from './Page/Home.jsx';
+import Favorite from './Page/Favorite.jsx';
+import Error from './Page/Error.jsx';
+
 
 
 // массив кроссовок находится на бэке. Из-за того что там ограничение нам пришлось создать 2 акк что создать 3 массива
@@ -15,7 +19,7 @@ function App() {
   //Поиск
   const [searchValue, setSearchValue] = React.useState('')
   //Избранное
-  const [favorites, setIsFavorites] = React.useState('')
+  const [favorites, setIsFavorites] = React.useState([])
 
 
   /*Здесь мы пытаемся сделать карзину видимой или невидимой*/
@@ -78,41 +82,35 @@ function App() {
         onRemove={onRemoveItem} /> //удаление кросов при клике на крестик
         : null}
 
-
       <Header onClickCart={() => setCartOpened(true)} /> {/*Header у тебя будет функция onClickCart которая будет делать true*/}
       {/* content */}
       {/* Sneakers*/}
-      <div className=" content p-40">
-        <div className="Titlemd d-flex align-center justify-between mb-40">
-          <h1>{searchValue ? `Поиск по запросу ${searchValue}` : `Все кроссовки`}</h1>
-          <div className="search-block d-flex">
-            <img src="/img/search.svg" alt="Search" />
-            <input
-              onChange={onChangeSearchInput}
-              placeholder="Поиск..."
-              value={searchValue} />
-            {searchValue && <img width={19} height={19} //написали если в input что то есть то появится svg с крестиком 
-              className='SearchRemoveBtn' src="/img/btn-remove.svg" alt="clear"
-              onClick={() => setSearchValue('')} />}
-          </div>
-        </div>
-
-        <div className="mainCards d-flex">
-
-          {/* Карточка товара на главной странице */}
-          {items
-            .filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())) //найди мне item.title переведи в нижний регистр и найди там все что есть у нас в SearchValue и переведи это в нижний регистр
-            .map((item, index) => ( //5 этот json помещенный в items возьми и отрендори (То есть на каждом шаге будет создавать карточка с данными) 
-              <Card // 6 и в каждую карточку добавь то что есть в json
-                key={index}
-                title={item.title} // левая часть это пропсы нашей карточки а справа это инофрмация бэка 
-                price={item.price}
-                imgUrl={item.imageUrl}
-                onPlus={(obj) => onAddToCart(obj)} //в документе card мы добавили этой функции объекты title price imgurl
-                onFavorite={(obj) => onAddToFavorite(obj)} />
-            ))}
-        </div>
-      </div>
+      
+      <Routes>
+        <Route
+        path="/"
+        element={
+          <Home
+          items={items}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          onChangeSearchInput={onChangeSearchInput}
+          onAddToFavorite={onAddToFavorite}
+          onAddToCart={onAddToCart}
+          />
+        }
+        />
+        <Route 
+        path="/favorite"
+        element={
+          <Favorite
+          searchValue={searchValue}
+          onChangeSearchInput={onChangeSearchInput}
+          setSearchValue={setSearchValue}
+          />
+        }
+        />
+      </Routes>
     </div>
   );
 }

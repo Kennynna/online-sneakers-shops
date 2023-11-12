@@ -5,17 +5,18 @@ import style from './Card.module.scss'
 
 
 
-function Card({ imgUrl, title, price, onFavorite, onPlus }) {
+function Card({ id,imgUrl, title, price, onFavorite, onPlus, favorited=false }) {
     const [isAdded, setIsAdded] = React.useState(false); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
-    const [isFavorite, setIsFavorite] = React.useState(false); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
+    const [isFavorite, setIsFavorite] = React.useState(favorited); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
     const onClickPlus = () => {
         onPlus({ imgUrl, title, price });
         setIsAdded(!isAdded); {/*Задаем услове, чтобы наш + на товаре превращался в галочку и наоборот снимает если повторно нажмем*/ }
     }
     const onClickLike = () => {
-        onFavorite({ imgUrl, title, price });//функция которая возвращает в себя объект
-        setIsFavorite(!isFavorite);//функция которая ставит лайк красным
+        onFavorite({ id,imgUrl, title, price });//функция которая возвращает в себя объект
+        setIsFavorite(!isFavorite);//функция которая ставит лайк краснымonClick
     }
+
 
 
     return (

@@ -20,14 +20,8 @@ function App() {
   const [searchValue, setSearchValue] = React.useState('')
   //Избранное
   const [favorites, setIsFavorites] = React.useState([])
-
-
   /*Здесь мы пытаемся сделать карзину видимой или невидимой*/
   const [cartOpened, setCartOpened] = React.useState(false);
-
-
-
-
   //============================================================================
   //                                    Методы
   //============================================================================
@@ -42,35 +36,46 @@ function App() {
     })*/
     //Это тоже самое что и верхний fetch только сокрощенние через Axios 
     // получение товаров находящихся на сервера 
-    axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/items').then((res) => {
+    axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/items/').then((res) => {
       setItems(res.data)
     })
     // получение в карзине тех товаров на которые мы кликнули +
-    axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart').then((res) => {
+    axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/').then((res) => {
       setCartItems(res.data)
+    })
+    axios.get('https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/').then((res) => {
+      setIsFavorites(res.data)
     })
   }, []);
 
   //добавление на сервер объект при клике на +
   const onAddToCart = (obj) => {
-    axios.post('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart', obj)
+    axios.post('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/', obj)
     setCartItems((prev) => [...prev, obj]) //создание массива объекта при клике на + в каррточке 
   }
+  
   // удаление товара с сервера и с корзины
   const onRemoveItem = (id) => {
     axios.delete(`https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/${id}`);
-    setCartItems((prev) => prev.filter(item => item.id !== id))
+    setCartItems((prev) => prev.filter((item) => item.id !== id))
   }
+  //метод добавления в избранное
+  const onAddToFavorite = (obj) => {
+    if(favorites.find((favObj) => favObj.id === obj.id)){
+      axios.delete(`https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/${obj.id}`)
+    } else{
+      axios.post('https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/', obj)
+      setIsFavorites((prev) => [...prev, obj])
+    }
+    
+  }
+  
   //Метод поиска по названию
   const onChangeSearchInput = (event) => {
     setSearchValue(event.target.value)
   }
-  //метод добавления в избранное
-  const onAddToFavorite = (obj) => {
-    axios.post('https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites', obj)
-    setIsFavorites((prev) => [...prev, obj])
 
-  }
+
 
 
   return (
@@ -104,9 +109,8 @@ function App() {
         path="/favorite"
         element={
           <Favorite
-          searchValue={searchValue}
-          onChangeSearchInput={onChangeSearchInput}
-          setSearchValue={setSearchValue}
+          items={favorites}
+          onAddToFavorite={onAddToFavorite}
           />
         }
         />

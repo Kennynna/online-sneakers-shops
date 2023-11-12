@@ -34,11 +34,9 @@ const Home = ({
             .map((item, index) => ( //5 этот json помещенный в items возьми и отрендори (То есть на каждом шаге будет создавать карточка с данными) 
               <Card // 6 и в каждую карточку добавь то что есть в json
                 key={index}
-                title={item.title} // левая часть это пропсы нашей карточки а справа это инофрмация бэка 
-                price={item.price}
-                imgUrl={item.imageUrl}
                 onPlus={(obj) => onAddToCart(obj)} //в документе card мы добавили этой функции объекты title price imgurl
-                onFavorite={(obj) => onAddToFavorite(obj)} />
+                onFavorite={(obj) => onAddToFavorite(obj)}
+                {...item} />
             ))}
         </div>
       </div>

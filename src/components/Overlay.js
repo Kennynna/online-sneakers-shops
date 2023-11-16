@@ -30,7 +30,7 @@ function Overlay({ onCloseCart, onRemove, items = [] }) {
         {/* Карточки товара в корзине */}
         <div className="items">
           {items.map((obj) => (
-            <div className="cartItem d-flex align-center mb-20">
+            <div key={obj.id} className="cartItem d-flex align-center mb-20">
               <div style={{ backgroundImage: `url(${obj.imgUrl})` }} className="cartItemImg">
               </div>
               <div className="mr-20 flex">

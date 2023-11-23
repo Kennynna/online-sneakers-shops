@@ -1,15 +1,23 @@
 import React from "react";
 import Card from "../components/Card/Card";
 import axios from "axios";
+import AppContext from "../context";
 
 function Orders() {
-  const [orders, SetOrders] = React.useEffect([]);
+  const {onAddToFavorite,onAddToCart,isLoading} = React.useContext(AppContext) // Реакт вытащи из AppContext то что в фигурных скобках
+  const [orders, setOrders] = React.useState([]);
+  const [isLoading, setIsLoadimg]= React.useState(true)
 
   React.useEffect(() => {
     (async () => {
-      const { data } = await axios.get(
-        "https://654b968b5b38a59f28ef5cf4.mockapi.io/Orders/"
-      );
+      try {
+        const { data } = await axios.get("https://654b968b5b38a59f28ef5cf4.mockapi.io/Orders/");
+      setOrders(data.reduce((prev, obj ) => [...prev, ...obj.items],[])) //Преорбазовали несколько массивов в один 
+      setIsLoadimg(false)
+      } catch (error) {
+        alert('Ошибка при запросе заказов')
+      }
+      
     })();
   }, []);
 
@@ -21,8 +29,13 @@ function Orders() {
 
       <div className="mainCards d-flex">
         {/* Карточка товара на главной странице */}
-        {[].map((item, index) => (
-          <Card />
+        {orders.map((item, index) => (
+          <Card key={index}
+          onFavorite={(obj) => onAddToFavorite(obj)}
+          onPlus={(obj) => onAddToCart(obj)} //в документе card мы добавили этой функции объекты title price imgurl
+          loading={isLoading}
+          {...item}/>
+
         ))}
       </div>
     </div>

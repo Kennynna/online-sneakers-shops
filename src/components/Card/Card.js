@@ -1,17 +1,25 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import style from './Card.module.scss'
+import AppContext from '../../context';
 
 
 
 
 
-function Card({ id, imgUrl, title, price, onFavorite, onPlus, favorited = false, added = false, loading = false }) {
-    const [isAdded, setIsAdded] = React.useState(added); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
+function Card({ id, 
+    imgUrl, 
+    title,
+    price, 
+    onFavorite, 
+    onPlus, 
+    favorited = false, 
+    loading = false 
+    }) {
+    const {isItemAdded} = React.useContext(AppContext);
     const [isFavorite, setIsFavorite] = React.useState(favorited); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
     const onClickPlus = () => {
         onPlus({ id, imgUrl, title, price });
-        setIsAdded(!isAdded); {/*Задаем услове, чтобы наш + на товаре превращался в галочку и наоборот снимает если повторно нажмем*/ }
     }
     const onClickLike = () => {
         onFavorite({ id, imgUrl, title, price });//функция которая возвращает в себя объект
@@ -50,7 +58,7 @@ function Card({ id, imgUrl, title, price, onFavorite, onPlus, favorited = false,
                         </div>
                         <button onClick={onClickPlus}>
                             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                {isAdded ? ( //Замена svg при клике 
+                                {isItemAdded(id) ? ( //Замена svg при клике 
                                     <g>
                                         <rect width="32" height="32" rx="8" fill="url(#paint0_linear_60_200)" />
                                         <g clip-path="url(#clip0_60_200)">

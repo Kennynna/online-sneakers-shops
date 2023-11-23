@@ -1,9 +1,7 @@
+import React from "react"
 import Card from "../components/Card/Card"
 
-
-
 const Home = ({
-    cartItems,
     items,
     searchValue,
     setSearchValue,
@@ -11,22 +9,23 @@ const Home = ({
     onAddToFavorite,
     onAddToCart,
     isLoading
-}) =>{
+})  => { 
+
+
   const renderItems = () =>{ //отображение карточке (фековых или настоящих) пока грузяться наши карточки
-    return( (isLoading ? [...Array(10)] : items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())))
-             //найди мне item.title переведи в нижний регистр и найди там все что есть у нас в SearchValue и переведи это в нижний регистр
-            .map((item, index) => ( //5 этот json помещенный в items возьми и отрендори (То есть на каждом шаге будет создавать карточка с данными) 
-              <Card // 6 и в каждую карточку добавь то что есть в json
-                key={index}
-                onPlus={(obj) => onAddToCart(obj)} //в документе card мы добавили этой функции объекты title price imgurl
-                onFavorite={(obj) => onAddToFavorite(obj)}
-                added={cartItems.some((obj) => Number(obj.id)===Number(items.id))}//булевое значение которое автоматический в reacte применимает true
-                loading={isLoading}
-                {...item} 
-              />
-            ))
-    )
-  }
+  const filteredItems = items.filter((item)=>
+    item.title.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+    return (isLoading ? [...Array(10)] : filteredItems).map((item, index) => ( //5 этот json помещенный в items возьми и отрендори (То есть на каждом шаге будет создавать карточка с данными) 
+      <Card // 6 и в каждую карточку добавь то что есть в json
+        key={index}
+        onFavorite={(obj) => onAddToFavorite(obj)}
+        onPlus={(obj) => onAddToCart(obj)} //в документе card мы добавили этой функции объекты title price imgurl
+        loading={isLoading}
+        {...item} 
+      />
+    ))
+  };
 
     return(
         <div className=" content p-40">

@@ -7,6 +7,7 @@ import Home from './Page/Home.jsx';
 import Favorite from './Page/Favorite.jsx';
 import Error from './Page/Error.jsx';
 import Navigate from './components/Navigate.js';
+import AppContext from './context.js';
 
 
 // массив кроссовок находится на бэке. Из-за того что там ограничение нам пришлось создать 2 акк что создать 3 массива
@@ -65,8 +66,9 @@ function App() {
   const onAddToFavorite = async (obj) => {
     try{
 
-      if(favorites.find((favObj) => favObj.id === obj.id)){
+      if(favorites.find((favObj) => Number(favObj.id) === Number(obj.id))){
         axios.delete(`https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/${obj.id}`)
+        setIsFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
       } else{
         const {data} = await axios.post('https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/', obj)
         setIsFavorites((prev) => [...prev, data])
@@ -82,10 +84,14 @@ function App() {
     setSearchValue(event.target.value)
   }
 
+  const isItemAdded = (id) =>{
+    return  cartItems.some((obj) => Number(obj.id)  === Number(id))
+  }
 
 
 
   return (
+    <AppContext.Provider value={{items,cartItems,favorites,isItemAdded,onAddToFavorite,setCartOpened,setCartItems}}>
     <div className="wrapper clear mt-40 ">
       {/* правое окно КОРЗИНЫ */}
       {cartOpened ? <Overlay //условие отображение корзины. 
@@ -117,13 +123,12 @@ function App() {
         path="/favorite"
         element={
           <Favorite
-          items={favorites}
-          onAddToFavorite={onAddToFavorite}
           />
         }
         />
       </Routes>
     </div>
+    </AppContext.Provider>
   );
 }
 

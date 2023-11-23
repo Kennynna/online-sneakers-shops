@@ -1,9 +1,11 @@
+import React from "react"
 import Card from "../components/Card/Card"
+import AppContext from "../context"
 
-const Favorites = ({
-  items,
-  onAddToFavorite
-}) =>{
+function Favorites  () {
+  const {favorites,onAddToFavorite} = React.useContext(AppContext)
+
+  
     return(
         <div className=" content p-40">
         <div className="Titlemd d-flex align-center justify-between mb-40">
@@ -13,7 +15,7 @@ const Favorites = ({
         <div className="mainCards d-flex">
 
           {/* Карточка товара на главной странице */}
-          {items.map((item, index) => ( //5 этот json помещенный в items возьми и отрендори (То есть на каждом шаге будет создавать карточка с данными) 
+          {favorites.map((item, index) => ( //5 этот json помещенный в items возьми и отрендори (То есть на каждом шаге будет создавать карточка с данными) 
               <Card // 6 и в каждую карточку добавь то что есть в json
                 key={index}// левая часть это пропсы нашей карточки а справа это инофрмация бэка 
                 onFavorite={onAddToFavorite}

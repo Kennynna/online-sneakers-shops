@@ -1,5 +1,5 @@
-const Navigate = () =>{
-    return(
+const Navigate = () => {
+    return (
         <nav className="nav">
             <div className="nav__items">
                 <ul>

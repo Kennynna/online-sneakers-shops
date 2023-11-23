@@ -7,16 +7,16 @@ import AppContext from '../../context';
 
 
 
-function Card({ id, 
-    imgUrl, 
+function Card({ id,
+    imgUrl,
     title,
-    price, 
-    onFavorite, 
-    onPlus, 
-    favorited = false, 
-    loading = false 
-    }) {
-    const {isItemAdded} = React.useContext(AppContext);
+    price,
+    onFavorite,
+    onPlus,
+    favorited = false,
+    loading = false
+}) {
+    const { isItemAdded } = React.useContext(AppContext);
     const [isFavorite, setIsFavorite] = React.useState(favorited); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
     const onClickPlus = () => {
         onPlus({ id, imgUrl, title, price });

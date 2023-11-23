@@ -2,14 +2,13 @@ import React from "react"
 import Info from "./Info"
 import AppContext from "../context"
 import axios from "axios"
+import { useCart } from "../hooks/useCart"
 
 
-const delay = (ms) => new Promise((resolve, reject) => setTimeout(resolve,ms))
-
+const delay = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms))
 
 function Overlay({ onCloseCart, onRemove, items = [] }) {
-
-  const { cartItems, setCartItems } = React.useContext(AppContext)
+  const {cartItems, setCartItems,totalPrice} = useCart()
   const [orderId, setOrderId] = React.useState(null)
   const [isOrederComplate, setIsOrederComplate] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -18,12 +17,12 @@ function Overlay({ onCloseCart, onRemove, items = [] }) {
     try {
       setIsLoading(true)
       const { data } = await axios.post('https://654b968b5b38a59f28ef5cf4.mockapi.io/Orders/', {
-        items:cartItems,
+        items: cartItems,
       });
       for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
-          await axios.delete('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/'+ item.id)
-          await delay(100)
+        await axios.delete('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/' + item.id)
+        await delay(100)
       }
       setOrderId(data.id)
       setIsOrederComplate(true)
@@ -66,18 +65,18 @@ function Overlay({ onCloseCart, onRemove, items = [] }) {
                   <li>
                     <span>Итого:</span>
                     <div></div>
-                    <b>21 489 руб</b>
+                    <b>{totalPrice} руб</b>
                   </li>
                   <li>
                     <span>Налог 5%:</span>
                     <div></div>
-                    <b>1074 руб</b>
+                    <b>{(totalPrice * 5 / 100)} руб</b>
                   </li>
                 </ul>
-                
-                <button 
-                disabled={isLoading}
-                onClick={onClickOrder}
+
+                <button
+                  disabled={isLoading}
+                  onClick={onClickOrder}
                   className="greenButton">Оформить заказ <img src="/img/arrow.svg" alt="" /></button>
               </div>
             </div>

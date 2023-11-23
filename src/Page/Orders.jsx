@@ -4,7 +4,7 @@ import axios from "axios";
 import AppContext from "../context";
 
 function Orders() {
-  const {onAddToFavorite,onAddToCart,isLoading} = React.useContext(AppContext) // Реакт вытащи из AppContext то что в фигурных скобках
+  const {onAddToFavorite,onAddToCart} = React.useContext(AppContext) // Реакт вытащи из AppContext то что в фигурных скобках
   const [orders, setOrders] = React.useState([]);
   const [isLoading, setIsLoadimg]= React.useState(true)
 

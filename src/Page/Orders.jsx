@@ -29,10 +29,8 @@ function Orders() {
 
       <div className="mainCards d-flex">
         {/* Карточка товара на главной странице */}
-        {orders.map((item, index) => (
+        {(isLoading ? [...Array(10)] : orders).map((item, index) => (
           <Card key={index}
-          onFavorite={(obj) => onAddToFavorite(obj)}
-          onPlus={(obj) => onAddToCart(obj)} //в документе card мы добавили этой функции объекты title price imgurl
           loading={isLoading}
           {...item}/>
 

@@ -7,7 +7,7 @@ import AppContext from '../../context';
 
 
 
-function Card({ id,
+function Card({ id, 
     imgUrl,
     title,
     price,
@@ -18,11 +18,12 @@ function Card({ id,
 }) {
     const { isItemAdded } = React.useContext(AppContext);
     const [isFavorite, setIsFavorite] = React.useState(favorited); {/*Хук useState позволяет нам менять состояние в js и на странице(то есть обновляет изменения)*/ }
+    const obj ={ id, parrentId:id, imgUrl, title, price }
     const onClickPlus = () => {
-        onPlus({ id, imgUrl, title, price });
+        onPlus(obj);
     }
     const onClickLike = () => {
-        onFavorite({ id, imgUrl, title, price });//функция которая возвращает в себя объект
+        onFavorite(obj);//функция которая возвращает в себя объект
         setIsFavorite(!isFavorite);//функция которая ставит лайк краснымonClick
     }
 
@@ -45,10 +46,10 @@ function Card({ id,
                 <rect x="1" y="2" rx="0" ry="0" width="144" height="148" />
             </ContentLoader> :
                 <div>
-                    <div className={style.favorite} >
-                        <img onClick={onClickLike}
-                            src={isFavorite ? "/img/like-active.svg" : "/img/likee.svg"} alt="UnLike" />
-                    </div>
+                    {onFavorite && (<div className={style.favorite} >
+                    <img onClick={onClickLike}
+                    src={isFavorite ? "/img/like-active.svg" : "/img/likee.svg"} alt="UnLike" />
+                    </div>)}
                     <img className='IMGMD' width={130} height={112} src={imgUrl} alt="" />
                     <p>{title}</p>
                     <div className="d-flex justify-between align-center">
@@ -56,7 +57,7 @@ function Card({ id,
                             <span>Цена:</span>
                             <b>{price} руб</b>
                         </div>
-                        <button onClick={onClickPlus}>
+                        {onPlus && (<button onClick={onClickPlus}>
                             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 {isItemAdded(id) ? ( //Замена svg при клике 
                                     <g>
@@ -91,7 +92,7 @@ function Card({ id,
                                     </React.Fragment>
                                 )}
                             </svg>
-                        </button>
+                        </button>)}
                     </div>
                 </div>
             }

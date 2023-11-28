@@ -1,13 +1,14 @@
 import React from "react"
-import Info from "./Info"
-import AppContext from "../context"
 import axios from "axios"
-import { useCart } from "../hooks/useCart"
 
+import Info from "../Info"
+import { useCart } from "../../hooks/useCart"
+
+import styles from './overlay.module.scss'
 
 const delay = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms))
 
-function Overlay({ onCloseCart, onRemove, items = [] }) {
+function Overlay({ onCloseCart, onRemove, items = [], opened }) {
   const {cartItems, setCartItems,totalPrice} = useCart()
   const [orderId, setOrderId] = React.useState(null)
   const [isOrederComplate, setIsOrederComplate] = React.useState(false)
@@ -22,7 +23,7 @@ function Overlay({ onCloseCart, onRemove, items = [] }) {
       for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
         await axios.delete('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/' + item.id)
-        await delay(100)
+        await delay(1000)
       }
       setOrderId(data.id)
       setIsOrederComplate(true)
@@ -35,8 +36,8 @@ function Overlay({ onCloseCart, onRemove, items = [] }) {
 
 
   return (
-    <div className="overlay">
-      <div className="drawer ">
+    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : "" }`}>
+      <div className={styles.drawer}>
         <h2 className="mb-30 d-flex justify-between">
           Корзина
           <img onClick={onCloseCart} className='removeBtn' src="/img/btn-remove.svg" alt="" />

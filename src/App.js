@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Header from "./components/Header";
-import Overlay from "./components/Overlay";
+import Overlay from "./components/Overlay/Overlay";
 import { Route, Routes } from "react-router-dom";
 import Home from './Page/Home.jsx';
 import Favorite from './Page/Favorite.jsx';
@@ -32,36 +32,55 @@ function App() {
   //запрос на сервер с полследущим заполнения нашего хука item
   React.useEffect(() => {
     async function fetchData() {
+      try {
+        const [cartResponse, itemsResponse, favoritesResponse] = await Promise.all([
+          axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/'),
+          axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/items/'),
+          axios.get('https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/')
+        ])
 
-      setIsLoading(true)
-      // получение в карзине тех товаров на которые мы кликнули +
-      const cartResponse = await axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/');
-      const itemsResponse = await axios.get('https://6545fd86fe036a2fa9550e7a.mockapi.io/items/');
-      const favoritesResponse = await axios.get('https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/');
-      setIsLoading(false)
+        setIsLoading(false)
+        setCartItems(cartResponse.data)
+        setIsFavorites(favoritesResponse.data)
+        setItems(itemsResponse.data)
+      } catch (error) {
+        alert('Ошибка при запросе данных')
+      }
 
-      setCartItems(cartResponse.data)
-      setIsFavorites(favoritesResponse.data)
-      setItems(itemsResponse.data)
+
     }
     fetchData(); //мы сделали ассин функцию для того чтобы у нас исправно работал хук USeEffect
   }, []);
 
   //добавление на сервер объект при клике на +
-  const onAddToCart = (obj) => {
-    if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-      axios.delete(`https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/${obj.id}`)
-      setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
-    } else {
-      axios.post('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/', obj)
-      setCartItems((prev) => [...prev, obj]) //создание массива объекта при клике на + в каррточке 
+  const onAddToCart = async (obj) => {
+    try {
+      if (cartItems.find((item) => Number(item.parrentId) === Number(obj.id))) {
+        setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
+        await axios.delete(`https://654b968b5b38a59f28ef5cf4.mockapi.io/favorites/${obj.id}`)
+      } else {
+        const { data } = await axios.post('https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/', obj)
+        setCartItems((prev) => [...prev, data]) //создание массива объекта при клике на + в каррточке 
+        setCartItems((prev) => prev.map(item => {
+          if (item.parrentId === data.parrentId) {
+            return {
+              ...item,
+              id: data.id
+            }
+          }
+          return item
+        }))
+      }
+    } catch (error) {
+      alert('Не получилось добавить товар в корзину')
     }
+
   }
 
   // удаление товара с сервера и с корзины
   const onRemoveItem = (id) => {
     axios.delete(`https://6545fd86fe036a2fa9550e7a.mockapi.io/cart/${id}`);
-    setCartItems((prev) => prev.filter((item) => item.id !== id))
+    setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(id)))
   }
   //метод добавления в избранное
   const onAddToFavorite = async (obj) => {
@@ -86,7 +105,7 @@ function App() {
   }
 
   const isItemAdded = (id) => {
-    return cartItems.some((obj) => Number(obj.id) === Number(id))
+    return cartItems.some((obj) => Number(obj.parrentId) === Number(id))
   }
 
 
@@ -94,12 +113,14 @@ function App() {
   return (
     <AppContext.Provider value={{ items, cartItems, favorites, isItemAdded, onAddToFavorite, setCartOpened, setCartItems }}>
       <div className="wrapper clear mt-40 ">
+
         {/* правое окно КОРЗИНЫ */}
-        {cartOpened ? <Overlay //условие отображение корзины. 
+        <Overlay //условие отображение корзины. 
           items={cartItems} // отображение крсовок
           onCloseCart={() => setCartOpened(false)}// закрытие карзины 
-          onRemove={onRemoveItem} /> //удаление кросов при клике на крестик
-          : null}
+          onRemove={onRemoveItem}
+          opened={cartOpened} />
+
 
         <Header onClickCart={() => setCartOpened(true)} /> {/*Header у тебя будет функция onClickCart которая будет делать true*/}
         {/* content */}
